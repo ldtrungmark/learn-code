@@ -1,0 +1,12 @@
+version: '3.9'
+
+services:
+  postgres:
+    image: postgres:latest
+    container_name: db-postgres-trustonic
+    environment:
+      POSTGRES_DB: postgres
+      POSTGRES_USER: dummy
+      POSTGRES_PASSWORD: dummy
+    ports:
+      - "5432:5432"
