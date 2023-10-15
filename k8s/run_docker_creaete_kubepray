@@ -1,0 +1,10 @@
+# Change flannel
+
+# Create env setup k8s with kubespray for cluster k8s
+docker run --rm -it --mount type=bind,source=/home/trungle/kubernetes/kubespray/inventory/homelab-k8s,dst=/inventory \
+  --mount type=bind,source=/home/trungle/.ssh/id_rsa,dst=/root/.ssh/id_rsa \
+  --mount type=bind,source=/home/trungle/.ssh/id_rsa,dst=/home/sysadmin/.ssh/id_rsa \
+  quay.io/kubespray/kubespray:v2.20.0 bash 
+
+# Setup K8S: Run in container
+ansible-playbook -i /inventory/hosts.yaml cluster.yml --user=sysadmin --ask-pass --become --ask-become-pass
