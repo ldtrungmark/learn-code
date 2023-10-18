@@ -8,9 +8,7 @@ Làm theo hướng dẫn sau: https://topdev.vn/blog/huong-dan-cach-cai-dat-vmwa
 Link download: https://www.centos.org/download/ (kiểm tra kiến trúc của máy local để chọn phiên bản cho phù hợp. Có thể dùng lệnh 'uname -a' ở terminal để xem thông tin).
 
 Ví dụ kết quả khi chạy trên terminal như sau: <br>
-<code>
-    Linux tpp-lab-058 6.2.0-34-generic #34~22.04.1-Ubuntu SMP PREEMPT_DYNAMIC Thu Sep  7 13:12:03 UTC 2 x86_64 x86_64 x86_64 GNU/Linux
-</code>
+<code>Linux tpp-lab-058 6.2.0-34-generic #34~22.04.1-Ubuntu SMP PREEMPT_DYNAMIC Thu Sep  7 13:12:03 UTC 2 x86_64 x86_64 x86_64 GNU/Linux</code>
 <br>
 Có nghĩa là máy tính của tôi đang chạy OS trên kiến trúc x86_64, tôi sẽ download Centos kiến  trúc này.
 
@@ -68,7 +66,7 @@ Tiếp theo, tìm địa chỉ IP đang sử dụng kết nối internet của m
 Như vậy, 192.168.61.135 chính là IP cần lấy.
 
 Sau khi lấy được tất cả IP của các máy ảo thì khai báo chúng vào file hosts trên máy local.
->sudo nano /etc/hosts
+><code>sudo nano /etc/hosts</code>
 <p align="center"><img src="./images/1_set_up_machine/hosts.png"></p>
 
 Khai báo theo format &ltIP&gt &ltHostname&gt. Trong đó, hostname đặt cho các máy bạn muốn dùng làm master, worker, control.
