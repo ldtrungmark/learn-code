@@ -19,7 +19,7 @@ Sử dụng Centos vì đây là OS open source có tỉ lệ tương thích cao
 Khuyến nghị sử dụng gói không có GUI, vì nó nhẹ và chúng ta bắt buộc sử dụng hoàn toàn 100% trên terminal nên không cần GUI.
 
 <p align="center">
-  <img src="./images/1_set_up_machine/version_centos7_download.png" alt="Version của Centos7 Ubuntu x86_64">
+  <img src="./images/1_setup_machine/version_centos7_download.png" alt="Version của Centos7 Ubuntu x86_64">
 </p>
 
 
@@ -49,7 +49,7 @@ Tôi sẽ setup K8S với 1 máy làm master node, 1 máy làm worker node, 1 m�
 
 ### Tạo SSH key và cấu hình kết nối SSH
 
-Sau khi tạo xong 3 máy ảo và start chúng lên thì chúng ta sẽ thao tác trên các máy ảo thông qua kết nối remote ssh từ máy local. Vì cài Centos minimal nên thao tác trực tiếp sẽ không dùng được copy/paste và việc swtich tab (alt + tab) qua lại giữa VMWare và các tab khác sẽ hay bị keep phím alt. Do đó, sử dụng terminal trên máy local thao tác sẽ tiện lợi hơn.
+Sau khi tạo xong 3 máy ảo và start chúng lên thì chúng ta sẽ thao tác trên các máy ảo thông qua kết nối remote ssh từ máy local. Vì cài Centos minimal nên thao tác trực tiếp sẽ không dùng được copy/paste (trong terminal dùng ctrl + shift + C/V) và việc swtich tab (alt + tab) qua lại giữa VMWare và các tab khác sẽ hay bị keep phím alt. Do đó, sử dụng terminal trên máy local thao tác sẽ tiện lợi hơn.
 
 **[Ở các máy ảo]**
 
@@ -57,19 +57,19 @@ Trước tiên, ở các máy ảo, cần lấy địa chỉ IP kết nối inte
 
 Kiểm tra xem IP route default của máy ảo:
 ><code>ip route</code>
-<p align="center"><img src="./images/1_set_up_machine/ip_route.png"></p>
+<p align="center"><img src="./images/1_setup_machine/ip_route.png"></p>
 Như ví dụ trên, máy ảo đang kết nối với IP 192.168.61.number_ip (ở đây 2 là IP của route trong mạng này).
 
 Tiếp theo, tìm địa chỉ IP đang sử dụng kết nối internet của máy ảo có tiền tố '192.168.61'
 ><code>ip a</code>
-<p align="center"><img src="./images/1_set_up_machine/ip_a.png"></p>
+<p align="center"><img src="./images/1_setup_machine/ip_a.png"></p>
 Như vậy, 192.168.61.135 chính là IP cần lấy.
 
 Sau khi lấy được tất cả IP của các máy ảo thì khai báo chúng vào file hosts trên máy local.
 ><code>sudo nano /etc/hosts</code>
-<p align="center"><img src="./images/1_set_up_machine/hosts.png"></p>
+<p align="center"><img src="./images/1_setup_machine/hosts.png"></p>
 
-Khai báo theo format &ltIP&gt &ltHostname&gt. Trong đó, hostname đặt cho các máy bạn muốn dùng làm master, worker, control.
+Khai báo theo format IP/Hostname. Trong đó, hostname đặt cho các máy bạn muốn dùng làm master, worker, control.
 
 **[Ở máy Local]**
 
@@ -77,9 +77,9 @@ Tạo ssh key nếu chưa có.
 ><code>ssh-keygen</code>
 
 Copy ssh key của máy local vào các máy ảo. Vì đã setup hostname nên ta chỉ cần gọi hostname thay vì gọi IP của máy ảo:
-><code>ssh-copy-id master<br>
-ssh-copy-id worker<br>
-ssh-copy-id control</code>
+><code>ssh-copy-id sysadmin@master<br>
+ssh-copy-id sysadmin@worker<br>
+ssh-copy-id sysadmin@control</code>
 
 Xong, bây giờ thử ssh vào máy control theo format ***ssh user@hostname*** và nhập password của user.s
 ><code>ssh sysadmin@control</code>
@@ -120,7 +120,7 @@ Các bước thực hiện tắt swap:
 
 Kiểm tra swap đã tắt chưa: <code>free -h</code>
 <p align="center">
-  <img src="./images/1_set_up_machine/swap_status.png" alt="free -h">
+  <img src="./images/1_setup_machine/swap_status.png" alt="free -h">
 </p>
 
 
@@ -173,7 +173,7 @@ Nếu bạn không tắt hết ứng dụng đang chạy mà shudown ngang máy 
 Khi mở máy tính lên thì mạng ảo của VMWare sẽ bị disconnect. Do đó, cần connect lại các mạng ảo để khi bật máy ảo network sẽ hoạt động bình thường.
 
 <p align="center">
-  <img src="./images/1_set_up_machine/ethernet_vm.png" alt="free -h">
+  <img src="./images/1_setup_machine/ethernet_vm.png" alt="free -h">
 </p>
 
 vmnet1 và vmnet8 là gì?
