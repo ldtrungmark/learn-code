@@ -160,3 +160,30 @@ Các bước cần nắm:
 - Tạo các máy ảo để làm master/worker/control
 - Cấu hình ssh từ máy local vào máy control, từ máy control vào máy master/worker.
 - Cấu hình hệ thống cho các máy ảo: tắt swap, tắt firewall, ip_v4.
+
+
+# IV. Thông tin thêm
+
+## 1. Shutdown tất cả máy ảo trước khi shutdown máy local
+
+Nếu bạn không tắt hết ứng dụng đang chạy mà shudown ngang máy tính của bạn nó sẽ ảnh hưởng đến hệ thống vì bị termirate đột ngột. Khi bật máy tính lên lại có thể nó sẽ đứng màn hình không khởi động được máy.
+
+## 2. Connect mạng ảo trước khi mở máy ảo
+
+Khi mở máy tính lên thì mạng ảo của VMWare sẽ bị disconnect. Do đó, cần connect lại các mạng ảo để khi bật máy ảo network sẽ hoạt động bình thường.
+
+<p align="center">
+  <img src="./images/1_set_up_machine/ethernet_vm.png" alt="free -h">
+</p>
+
+vmnet1 và vmnet8 là gì?
+
+>vmnet1:
+>- Mạng vmnet1 là mạng host-only tùy chỉnh. Bạn có thể tạo và cấu hình nhiều mạng host-only như vmnet1, vmnet2, và nhiều hơn nữa.
+>- Mạng vmnet1 cung cấp một cách để các máy ảo trên cùng một máy chủ VMware giao tiếp với nhau bằng cách sử dụng mạng này.
+>- Các máy ảo trong mạng vmnet1 không thể truy cập internet hoặc các mạng bên ngoài mà không cấu hình thêm.
+
+>vmnet8:
+>- Mạng vmnet8 là mạng NAT (Network Address Translation) mặc định được cấu hình trong VMware.
+>- Mạng vmnet8 cho phép máy ảo kết nối tới internet thông qua kết nối NAT.
+>- Mạng vmnet8 cho phép máy ảo truy cập internet và các mạng bên ngoài, nhưng máy tính chứa máy ảo sẽ là điểm cuối NAT.
