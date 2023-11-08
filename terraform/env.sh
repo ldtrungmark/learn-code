@@ -1,0 +1,1 @@
+export LOCALSTACK_API_KEY=1Br1QGbCoq
