@@ -1,5 +1,10 @@
 # I. Cài đặt VMWare Workstation trên Ubuntu
+
+Để xây dựng hệ thống K8S ở local chúng ta cần nhiều máy tính để kết nối chúng với nhau. Tuy nhiên, thực hành trên máy cá nhân thì chúng ta sẽ tạo ra các máy ảo xem chúng như các máy local để giả lập.
+
 Làm theo hướng dẫn sau: https://topdev.vn/blog/huong-dan-cach-cai-dat-vmware-workstation-tren-ubuntu/
+
+>Bonus: bạn có thể tìm key free để mở khoá bản trial trên internet. Chẳng hạn ***[ở đây!](https://gist.github.com/PurpleVibe32/30a802c3c8ec902e1487024cdea26251)***
 
 
 # II. Tạo máy ảo trên VMWare
@@ -40,9 +45,10 @@ Làm theo hướng dẫn sau: https://readlearncode.com/centos/how-to-create-a-c
 
 ## 3. Setup máy ảo chuẩn bị cho K8S
 
-Vì thực hiện trên máy local nên tài nguyên có hạn, do đó tôi sẽ hạn chế số lượng node.
-
-Tôi sẽ setup K8S với 1 máy làm master node, 1 máy làm worker node, 1 máy control để setup.
+Vì thực hiện trên máy local nên tài nguyên có hạn, do đó tôi sẽ hạn chế số lượng node chỉ gồm:
+- 1 node master
+- 1 node worker
+- 1 node control (optional): nếu bạn muốn có 1 máy riêng biệt để chạy quản lý k8s và cài các phần mềm liên quan không ảnh hưởng đến máy cá nhân. Tôi sẽ hướng dẫn cài đặt cả máy control nhưng khi thực hành tôi sẽ dùng trực tiếp máy local làm node control (tài nguyên có hạn).
 
 >***Lưu ý: thực hiện cấu hình cho toàn bộ máy ảo như bên dưới***
 
@@ -150,6 +156,11 @@ Cấu hình ip_forward
 Sau khi setup xong tất cả các bước ở trên thì chúng ta tiến hành khởi động lại các máy ảo bằng lệnh <code>sudo reboot</code>
 
 Kết nối ssh sẽ tự động ngắt kết nối, chờ máy ảo khởi động xong sẽ ssh vô lại bình thường.
+
+Như vậy, chúng ta đã tạo và config xong các máy chuẩn bị cho việc tạo cụm K8S.
+<p align="center">
+  <img src="./images/1_setup_machine/completed_create_vm.png" alt="free -h">
+</p>
 
 
 # III. Tổng kết
