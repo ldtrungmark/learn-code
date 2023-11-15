@@ -3,7 +3,7 @@
 ## 1. Storage class
 Trong Kubernetes (K8s), Storage Classes là một khái niệm quan trọng liên quan đến quản lý lưu trữ. Storage Class định nghĩa cách mà Persistent Volumes (PVs) sẽ được cung cấp và triển khai.
 
-<p align="center"><img src="https://www.kubecost.com/images/kubernetes-best-practices/kubernetes-storage-concepts.png"><i>(Nguồn: <a href="https://www.kubecost.com/kubernetes-best-practices/kubernetes-storage-class">https://www.kubecost.com/kubernetes-best-practices/kubernetes-storage-class</a>>)</i></p>
+<p align="center"><img src="https://www.kubecost.com/images/kubernetes-best-practices/kubernetes-storage-concepts.png"><i>(Nguồn: <a href="https://www.kubecost.com/kubernetes-best-practices/kubernetes-storage-class">https://www.kubecost.com/kubernetes-best-practices/kubernetes-storage-class</a>)</i></p>
 
 Tìm hiểu thêm về Storage Class: https://kubernetes.io/docs/concepts/storage/storage-classes
 
@@ -136,7 +136,7 @@ Do helm sẽ mặc định dùng chung config của kubectl nếu có, nên ở 
 
 ### Tạo folder nfs-storage
 ```shell
-cd cd k8s/k8s_lab/
+cd k8s/k8s_lab/
 mkdir nfs-storage
 cd nfs-storage
 ```
