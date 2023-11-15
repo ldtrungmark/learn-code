@@ -1,0 +1,11 @@
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+    name: test-pvc-delete
+spec:
+    storageClassName: trungle-nfs-delete
+    accessModes:
+        - ReadWriteOnce
+    resources:
+        requests:
+          storage: 10Mi
