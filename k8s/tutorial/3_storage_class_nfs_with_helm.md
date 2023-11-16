@@ -192,9 +192,9 @@ kubectl create ns storage
 ```
 Cài đặt nfs:
 ```shell
-helm upgrade --install nfs-storage-retain --namespace storage -f values-nfs-retain.yml nfs-subdir-external-provisioner-4.0.18.tgz
+helm upgrade --install nfs-storage-retain --namespace storage -f values-nfs-retain.yml nfs-subdir-external-provisioner/nfs-subdir-external-provisioner
 
-helm upgrade --install nfs-storage-delete --namespace storage -f values-nfs-delete.yml nfs-subdir-external-provisioner-4.0.18.tgz
+helm upgrade --install nfs-storage-delete --namespace storage -f values-nfs-delete.yml nfs-subdir-external-provisioner/nfs-subdir-external-provisioner
 ```
 Kiểm tra kết quả sẽ như thế này:
 

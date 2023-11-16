@@ -109,7 +109,7 @@ Sau đó thay đổi những tham số sau trong file:
 
 ### Install with Helm
 ```shell
-helm upgrade --install longhorn-storage -n storage -f values-longhorn.yaml longhorn-1.5.2.tgz 
+helm upgrade --install longhorn-storage -n storage -f values-longhorn.yaml longhorn/longhorn
 ```
 Đứng lên đi lại vận động chút chờ Longhorn được setup thôi. Nếu tất cả pods đều **running** như bên dưới thì thành công rồi đó! 😍
 
