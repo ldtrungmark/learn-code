@@ -1,0 +1,20 @@
+kind: Pod
+apiVersion: v1
+metadata:
+  name: pod-longhorn-retain
+spec:
+  volumes:
+        - name: longhorn-pvc-retain
+          persistentVolumeClaim:
+            claimName: longhorn-pvc-retain
+  containers:
+    - name: pod-test-longhorn-retain
+      volumeMounts:
+        - name: longhorn-pvc-retain # This is the name of the volume we set at the pod level
+          mountPath: /var/simple # Where to mount this directory in our container
+
+      # Now that we have a directory mounted at /var/simple, let's
+      # write to a file inside it!
+      image: alpine
+      command: ["/bin/sh"]
+      args: ["-c", "while true; do date >> /var/simple/file.txt; sleep 5; done"]
