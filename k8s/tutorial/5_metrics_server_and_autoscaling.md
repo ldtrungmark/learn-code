@@ -1,14 +1,3 @@
-<html>
-<head>
-<style>
-    .align_text{
-        text-align: justify
-    }
-</style>
-</head>
-<body>
-<div class=align_text>
-
 # I. Giới thiệu
 Metrics Server là một thành phần của Kubernetes (K8s) được sử dụng để thu thập và cung cấp các thông tin liên quan đến tài nguyên (resource metrics) của các Pods và Nodes trong cluster. Nó cung cấp các thông số như CPU và memory usage, số lượng các containers chạy, và nhiều thông tin khác.
 
@@ -237,6 +226,3 @@ Sau khi thực hành xong, chúng ta có thể xoá đi tất cả resource đã
 Như vậy chúng ta đã biết vai trò và cách sử dụng metrics-server trong K8S. Ngoài ra, cũng vọc qua cách sử dụng HPA đơn giản (tìm hiểu thêm ở đây: https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale).
 
 Bài viết sau sẽ cấu hình Load Balancing gồm: nginx, haproxy và keepalive.
-
-</div>
-</body>
