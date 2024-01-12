@@ -196,6 +196,11 @@ helm upgrade --install nfs-storage-retain --namespace storage -f values-nfs-reta
 
 helm upgrade --install nfs-storage-delete --namespace storage -f values-nfs-delete.yml nfs-subdir-external-provisioner/nfs-subdir-external-provisioner
 ```
+
+>Tips:
+>- **helm upgrade --install** thay vì **helm install** nhằm tránh trường hợp bạn đã install rồi mà lỗi hay cần update thì lệnh upgrade sẽ tự làm cho bạn.
+>- Tại sao phần truyền source nfs vào mình dùng tên repo helm **nfs-subdir-external-provisioner/nfs-subdir-external-provisioner** thay vì tên folder đã giản nén trước đó **nfs-subdir-external-provisioner** hay tên tệp nfs-subdir-external-provisioner-4.0.18.tgz đều được? Vì lỡ có xoá tệp nén hay folder source code đi, chỉ cần có file values thì chúng ta vẫn có thể cài đặt được helm của chart. 
+
 Kiểm tra kết quả sẽ như thế này:
 
     trungle@tpp-lab-058:~/learn-code/k8s/k8s_lab/nfs-storage$ kubectl get all -n storage
