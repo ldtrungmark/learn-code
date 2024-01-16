@@ -1,0 +1,11 @@
+version: '3'
+
+services:
+  superset:
+    image: apache/superset
+    container_name: superset
+    ports:
+      - "8080:8088"
+    environment:
+      - SUPERSET_SECRET_KEY=trungless
+    command: ["bash", "-c", "superset fab create-admin --username admin --firstname Superset --lastname Admin --email admin@superset.com --password admin && superset db upgrade && superset init && /usr/bin/run-server.sh"]
