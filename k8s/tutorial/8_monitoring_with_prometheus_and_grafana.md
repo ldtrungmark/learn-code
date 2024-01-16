@@ -166,110 +166,124 @@ Sau khi import, bạn sẽ thấy UI xịn xò như sau:
 
 # II. Giám sát service trên K8S bằng Prometheus và Grafana
 
-Bây giờ, chúng ta sẽ thử monitoring các thông số của MongoDB database được cài đặt trên K8S.
+Bây giờ, chúng ta sẽ cài đặt Minio để tìm hiểu về tính năng giám sát và gửi alert của Promtheus/Grafana nhé! Minio là một open-source giống với dịch vụ AWS S3 nhưng được host ở local.
 
 Các bước thực hiện:
-- Tải helm-chart của MongoDB và Mongodb Exporter
+- Tải helm-chart của Minio
 - Cấu hình file values.yaml
 - Install bằng helm
-- Cấu hình Prometheus lấy metrics từ Mongo Exporter
+- Cấu hình Prometheus lấy metrics từ Minio
 - Tạo dashboard Grafana
+- Cấu hình cảnh báo với Alert Prometheus
 
 ### Tải helm-chart
 
-Tìm repo của mongodb:
-
-    trungle@tpp-lab-058:~/learn-code/k8s/k8s_lab/prometheus$ helm search repo mongodb
-    NAME                                                    CHART VERSION   APP VERSION     DESCRIPTION                                       
-    prometheus-community/prometheus-mongodb-exporter        3.5.0           0.40.0          A Prometheus exporter for MongoDB metrics         
-    stable/mongodb                                          7.8.10          4.2.4           DEPRECATED NoSQL document-oriented database tha...
-    stable/mongodb-replicaset                               3.17.2          3.6             DEPRECATED - NoSQL document-oriented database t...
-    stable/prometheus-mongodb-exporter                      2.8.1           v0.10.0         DEPRECATED A Prometheus exporter for MongoDB me...
-    stable/unifi                                            0.10.2          5.12.35         DEPRECATED - Ubiquiti Network's Unifi Controller 
-
-Pull helm-chart:
 ```shell
-helm pull stable/mongodb
-helm pull prometheus-community/prometheus-mongodb-exporter
-tar -xzf mongodb-7.8.10.tgz
-tar -xzf prometheus-mongodb-exporter-3.5.0.tgz
-cp mongodb/values.yaml values-mongodb.yaml
-cp prometheus-mongodb-exporter/values.yaml values-mongodb-exporter.yaml
+cd ~/learn-code/k8s/k8s_lab/prometheus
+helm repo add bitnami https://charts.bitnami.com/bitnami
+helm search repo minio
+helm pull bitnami/minio
+tar -xzf minio-13.0.2.tgz
+cp minio/values.yaml values-minio.yaml
 ```
 
-### Cấu hình các file values.yaml
-
-**values-mongodb.yaml**: Database mình sẽ thực hiện expose port để truy cập thay vì dùng domain ingress như service web khác.
+### Cấu hình file values-minio.yaml
+Sau đó, sửa giá trị của các biến sau trong file **values-minio.yaml**:
 ```yaml
-mongodbUsername: admin
-mongodbPassword: admin
-mongodbDatabase: dev
-service:
-  type: NodePort
-  nodePort: 32717
+auth:
+  rootPassword: "sysadmin@123"
+ingress:
+  enabled: true
+  ingressClassName: "nginx"
+  hostname: minio.trungle.com
+  annotations:
+    prometheus.io/scrape: 'true'
+persistence:
+  storageClass: "longhorn-storage-retain"
+  size: 1Gi
 ```
 
-**values-mongodb-exporter.yaml**: Thông tin MongoDB dựa vào config ở trên.
-```yaml
-mongodb:
-  uri: "mongodb://admin:admin@mongodb:32717/dev" #mongodb là service name của MongoDB database
-
-serviceMonitor:
-  additionalLabels:
-    release: prometheus-grafana-stack #relase name của prometheus
-
-service:
-  labels: {}
-  annotations: {}
-  port: 9216
-  # type: ClusterIP
-  type: NodePort
-  nodePort: 32106
-  portName: metrics
-```
-
-### Cài đặt
-
+### Install bằng helm
 ```shell
-kubectl create ns mongodb
-helm -n mongodb upgrade --install mongodb -f values-mongodb.yaml stable/mongodb
-helm -n mongodb upgrade --install exporter -f values-mongodb-exporter.yaml prometheus-community/prometheus-mongodb-exporter
+kubectl create ns minio
+helm -n minio upgrade --install minio -f values-minio.yaml bitnami/minio
 ```
 
-    trungle@tpp-lab-058:~/learn-code/k8s/k8s_lab/prometheus$ kubectl get all -n mongodb
-    NAME                                                        READY   STATUS    RESTARTS   AGE
-    pod/exporter-prometheus-mongodb-exporter-75fd68545c-69s7r   1/1     Running   0          17m
-    pod/mongodb-5d8f8b6566-sgkq2                                1/1     Running   0          145m
+Chờ một chút để pod tạo xong thì kiểm tra xem tất cả đã ready chưa:
 
-    NAME                                           TYPE       CLUSTER-IP      EXTERNAL-IP   PORT(S)           AGE
-    service/exporter-prometheus-mongodb-exporter   NodePort   10.233.52.147   <none>        9216:32106/TCP    17m
-    service/mongodb                                NodePort   10.233.38.237   <none>        27017:32717/TCP   156m
+    trungle@tpp-lab-058:~/learn-code/k8s/k8s_lab/prometheus$ kubectl get all -n minio
+    NAME                        READY   STATUS    RESTARTS   AGE
+    pod/minio-c94d4b775-kmg82   1/1     Running   0          61s
 
-    NAME                                                   READY   UP-TO-DATE   AVAILABLE   AGE
-    deployment.apps/exporter-prometheus-mongodb-exporter   1/1     1            1           17m
-    deployment.apps/mongodb                                1/1     1            1           156m
+    NAME            TYPE        CLUSTER-IP     EXTERNAL-IP   PORT(S)             AGE
+    service/minio   ClusterIP   10.233.6.248   <none>        9000/TCP,9001/TCP   61s
 
-    NAME                                                              DESIRED   CURRENT   READY   AGE
-    replicaset.apps/exporter-prometheus-mongodb-exporter-75fd68545c   1         1         1       17m
-    replicaset.apps/mongodb-5d8f8b6566                                1         1         1       145m
-    replicaset.apps/mongodb-b4c74d95f                                 0         0         0       156m
+    NAME                    READY   UP-TO-DATE   AVAILABLE   AGE
+    deployment.apps/minio   1/1     1            1           61s
 
-Truy cập http://192.168.61.127:32106/metrics sẽ thấy metrics của MongoDB.
-<p align="center"><img src="./images/8_monitoring_with_prometheus_and_grafana/mongodb_exporter_metrics.png" alt="MongoDB Exporter Metrics"></p>
+    NAME                              DESIRED   CURRENT   READY   AGE
+    replicaset.apps/minio-c94d4b775   1         1         1       61s
 
-### Update prometheus
+Ok, giờ thì thêm config url của minio ***(192.168.61.127 minio.trungle.com)*** vào file **/etc/hosts** trên máy local để kiểm tra:
+<p align="center"><img src="./images/8_monitoring_with_prometheus_and_grafana/minio_login.png" alt="Minio Login"></p>
 
-**values-prometheus.yaml**
+Login vào bằng **username: admin và password: sysadmin@123** như đã config lúc trước. Sau đó, tạo 3 bucket:
+<p align="center"><img src="./images/8_monitoring_with_prometheus_and_grafana/minio_create_bucket.png" alt="Minio Create Bucket"></p>
+
+### Cấu hình Prometheus lấy metrics từ Minio
+
+Để ý lại file **values-minio.yaml** có đoạn expose metrics ***/minio/v2/metrics/cluster***, chúng ta sẽ config promethues lấy thông minio từ nó. Bây giờ thì quay lại file cấu hình promentheus trước đây **values-prometheus.yaml** để update phần scape-config cho minio như sau:
 ```yaml
-    additionalScrapeConfigs:
-    - job_name: 'mongodb'
-      scrape_interval: 5s
-      static_configs:
-      - targets: ['192.168.61.127:32106']
+additionalScrapeConfigs:
+- job_name: 'minio-job'
+  metrics_path: /minio/v2/metrics/cluster
+  scheme: http
+  static_configs:       
+  - targets: ['minio.minio.svc.cluster.local:9000']
 ```
+>Trong đó: **minio.minio.svc.cluster.local:9000** được khai báo theo format: < service-name >.< namespace >.< cluster-name >
+>- serivce-name: lúc nảy chúng ta install minio bằng helm với tên **minio**
+>- namespace: chúng ta install minio trên namespace cũng tên minio đã tạo trước đó
+>- cluster-name: trong file **values-minio.yaml** có khai báo ***clusterDomain: cluster.local***
 
-Upgrade prometheus:
+Sau đó, chạy lệnh helm để update lại prometheus:
 ```shell
 helm -n monitoring upgrade --install prometheus-grafana-stack -f values-prometheus.yaml prometheus-community/kube-prometheus-stack
 ```
 
+Chờ một lát để prometheus chạy lại, rồi truy cập vào prometheus.trungle.com xem có config của minio chưa nhé!
+<p align="center"><img src="./images/8_monitoring_with_prometheus_and_grafana/minio_job.png" alt="Minio Job"></p>
+
+### Tạo dashboard Grafana
+
+Google để tìm template dashboard minio đẹp nha (ví dụ: https://grafana.com/grafana/dashboards/13502-minio-dashboard/). Sau đó copy ID dashboard rồi import vào Grafana thôi, sau đó bạn có thể giám sát các chỉ số của minio trực quan rồi đó.
+<p align="center"><img src="./images/8_monitoring_with_prometheus_and_grafana/minio_dashboard.png" alt="Minio Dashboard"></p>
+
+### Cấu hình cảnh báo với Alert Prometheus
+
+Mở file **values-prometheus.yaml** để thêm rule cảnh báo cho minio:
+```yaml
+additionalPrometheusRules:
+ - name: minio-rule-file
+   groups:
+     - name: minio-rule
+       rules:
+       - alert: MinioBucketTotal
+         expr: minio_cluster_bucket_total{instance="minio.minio.svc.cluster.local:9000", job="minio-job", server="127.0.0.1:9000"} > 2
+         for: 10s
+         labels:
+            severity: page
+         annotations:
+            summary: High total bucket
+```
+
+Rule ở trên dùng để cảnh báo khi số lượng bucket trong minio > 2.
+Xong rồi thì chạy lệnh upgrade lại prometheus:
+```shell
+helm -n monitoring upgrade --install prometheus-grafana-stack -f values-prometheus.yaml prometheus-community/kube-prometheus-stack
+```
+
+Chờ một lát thì refresh lại page https://prometheus.trungle.com/alerts?search= để xem kết quả:
+<p align="center"><img src="./images/8_monitoring_with_prometheus_and_grafana/minio_alert.png" alt="Minio Alert"></p>
+
+Nice, ở lesson sau chúng ta sẽ tìm hiểu kỹ hơn về monitoring trên Prometheus.
