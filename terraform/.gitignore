@@ -1,0 +1,6 @@
+# Folder auto generate when start container Localstack Pro
+volume/
+
+# Generate when start Terraform
+*terraform*
+localstack*
