@@ -1,0 +1,23 @@
+[all]
+master  ansible_host=192.168.61.128      ip=192.168.61.128
+worker  ansible_host=192.168.61.129      ip=192.168.61.129
+
+[kube-master]
+master
+
+[kube-node]
+worker
+
+[etcd]
+master
+
+[k8s-cluster:children]
+kube-node
+kube-master
+calico-rr
+
+[calico-rr]
+
+[vault]
+master
+worker

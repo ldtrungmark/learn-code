@@ -1,0 +1,20 @@
+kind: Pod
+apiVersion: v1
+metadata:
+  name: pod-longhorn-delete
+spec:
+  volumes:
+        - name: longhorn-pvc-delete
+          persistentVolumeClaim:
+            claimName: longhorn-pvc-delete
+  containers:
+    - name: pod-test-longhorn-delete
+      volumeMounts:
+        - name: longhorn-pvc-delete # This is the name of the volume we set at the pod level
+          mountPath: /var/simple # Where to mount this directory in our container
+
+      # Now that we have a directory mounted at /var/simple, let's
+      # write to a file inside it!
+      image: alpine
+      command: ["/bin/sh"]
+      args: ["-c", "while true; do date >> /var/simple/file.txt; sleep 5; done"]

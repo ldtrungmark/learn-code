@@ -1,0 +1,254 @@
+{
+    "swagger": "2.0",
+    "basePath": "/",
+    "paths": {
+        "/person/": {
+            "get": {
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/Animal"
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "No found any animal"
+                    }
+                },
+                "operationId": "Get all animal",
+                "parameters": [
+                    {
+                        "name": "X-Fields",
+                        "in": "header",
+                        "type": "string",
+                        "format": "mask",
+                        "description": "An optional fields mask"
+                    }
+                ],
+                "tags": [
+                    "person"
+                ]
+            }
+        },
+        "/todo/": {
+            "post": {
+                "responses": {
+                    "201": {
+                        "description": "Success",
+                        "schema": {
+                            "$ref": "#/definitions/Todo"
+                        }
+                    }
+                },
+                "summary": "Create a new task",
+                "operationId": "create_todo",
+                "parameters": [
+                    {
+                        "name": "payload",
+                        "required": true,
+                        "in": "body",
+                        "schema": {
+                            "$ref": "#/definitions/Todo"
+                        }
+                    },
+                    {
+                        "name": "X-Fields",
+                        "in": "header",
+                        "type": "string",
+                        "format": "mask",
+                        "description": "An optional fields mask"
+                    }
+                ],
+                "tags": [
+                    "todo"
+                ]
+            },
+            "get": {
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/Todo"
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "No found TODO data"
+                    }
+                },
+                "summary": "List all tasks",
+                "operationId": "list_todos",
+                "parameters": [
+                    {
+                        "name": "X-Fields",
+                        "in": "header",
+                        "type": "string",
+                        "format": "mask",
+                        "description": "An optional fields mask"
+                    }
+                ],
+                "tags": [
+                    "todo"
+                ]
+            }
+        },
+        "/todo/{id}": {
+            "parameters": [
+                {
+                    "in": "path",
+                    "description": "The task identifier",
+                    "name": "id",
+                    "required": true,
+                    "type": "integer"
+                }
+            ],
+            "delete": {
+                "responses": {
+                    "404": {
+                        "description": "Todo no found"
+                    },
+                    "204": {
+                        "description": "Todo deleted"
+                    }
+                },
+                "summary": "Delete a task given its identifier",
+                "operationId": "delete_todo",
+                "tags": [
+                    "todo"
+                ]
+            },
+            "put": {
+                "responses": {
+                    "404": {
+                        "description": "Todo no found"
+                    },
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "$ref": "#/definitions/Todo"
+                        }
+                    }
+                },
+                "summary": "Update a task given its identifier",
+                "operationId": "put_todo",
+                "parameters": [
+                    {
+                        "name": "payload",
+                        "required": true,
+                        "in": "body",
+                        "schema": {
+                            "$ref": "#/definitions/Todo"
+                        }
+                    },
+                    {
+                        "name": "X-Fields",
+                        "in": "header",
+                        "type": "string",
+                        "format": "mask",
+                        "description": "An optional fields mask"
+                    }
+                ],
+                "tags": [
+                    "todo"
+                ]
+            },
+            "get": {
+                "responses": {
+                    "404": {
+                        "description": "Todo no found"
+                    },
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "$ref": "#/definitions/Todo"
+                        }
+                    }
+                },
+                "summary": "Fetch a given resource",
+                "operationId": "get_todo",
+                "parameters": [
+                    {
+                        "name": "X-Fields",
+                        "in": "header",
+                        "type": "string",
+                        "format": "mask",
+                        "description": "An optional fields mask"
+                    }
+                ],
+                "tags": [
+                    "todo"
+                ]
+            }
+        }
+    },
+    "info": {
+        "title": "TodoMVC API",
+        "version": "1.0",
+        "description": "A simple TodoMVC API"
+    },
+    "produces": [
+        "application/json"
+    ],
+    "consumes": [
+        "application/json"
+    ],
+    "tags": [
+        {
+            "name": "todo",
+            "description": "TODO operations"
+        },
+        {
+            "name": "person",
+            "description": "ANIMAL operations"
+        }
+    ],
+    "definitions": {
+        "Todo": {
+            "required": [
+                "task"
+            ],
+            "properties": {
+                "id": {
+                    "type": "integer",
+                    "description": "The task unique identifier",
+                    "readOnly": true
+                },
+                "task": {
+                    "type": "string",
+                    "description": "The task details"
+                }
+            },
+            "type": "object"
+        },
+        "Animal": {
+            "required": [
+                "name"
+            ],
+            "properties": {
+                "id": {
+                    "type": "integer",
+                    "description": "The task unique identifier",
+                    "readOnly": true
+                },
+                "name": {
+                    "type": "string",
+                    "description": "The name unique of the animal"
+                }
+            },
+            "type": "object"
+        }
+    },
+    "responses": {
+        "ParseError": {
+            "description": "When a mask can't be parsed"
+        },
+        "MaskError": {
+            "description": "When any error occurs on mask"
+        }
+    }
+}
