@@ -198,3 +198,18 @@ vmnet1 và vmnet8 là gì?
 >- Mạng vmnet8 là mạng NAT (Network Address Translation) mặc định được cấu hình trong VMware.
 >- Mạng vmnet8 cho phép máy ảo kết nối tới internet thông qua kết nối NAT.
 >- Mạng vmnet8 cho phép máy ảo truy cập internet và các mạng bên ngoài, nhưng máy tính chứa máy ảo sẽ là điểm cuối NAT.
+
+## 3. Lỗi không thể install vmnet
+```shell
+cd /usr/lib/vmware/modules/source
+sudo git clone https://github.com/mkubecek/vmware-host-modules
+cd vmware-host-modules
+# Checkout theo version workstation đang cài trên máy
+sudo git checkout workstation-17.0.2
+sudo make
+sudo tar -cf vmnet.tar vmnet-only
+sudo tar -cf vmmon.tar vmmon-only
+sudo mv vmnet.tar /usr/lib/vmware/modules/source/
+sudo mv vmmon.tar /usr/lib/vmware/modules/source/
+sudo vmware-modconfig --console --install-all
+```
