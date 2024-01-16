@@ -199,7 +199,9 @@ vmnet1 và vmnet8 là gì?
 >- Mạng vmnet8 cho phép máy ảo kết nối tới internet thông qua kết nối NAT.
 >- Mạng vmnet8 cho phép máy ảo truy cập internet và các mạng bên ngoài, nhưng máy tính chứa máy ảo sẽ là điểm cuối NAT.
 
-## 3. Lỗi không thể install vmnet
+## 3. Lỗi không thể install vmnet ở Linux
+
+Vào một ngày đẹp trời, bạn mở Workstation lên để tiếp tục hành trình thám hiểm K8S thì nó bắt bạn install vmnet vì lý do nào đó mà vmnet đã bị xoá. Nhưng khi install nó lại báo fail, dưới đây là cách fix:
 ```shell
 cd /usr/lib/vmware/modules/source
 sudo git clone https://github.com/mkubecek/vmware-host-modules
