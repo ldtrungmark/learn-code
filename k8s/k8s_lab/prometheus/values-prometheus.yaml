@@ -178,7 +178,7 @@ additionalPrometheusRules:
      - name: minio-rule
        rules:
        - alert: MinioBucketTotal
-         expr: minio_cluster_bucket_total{instance="minio.minio.svc.cluster.local:9000", job="minio-job", server="127.0.0.1:9000"} > 2
+         expr: minio_cluster_bucket_total{container="minio", endpoint="minio-api", instance="10.233.65.195:9000", job="minio", namespace="minio", pod="minio-c94d4b775-n6rxj", server="127.0.0.1:9000", service="minio"} > 2
          for: 10s
          labels:
             severity: page

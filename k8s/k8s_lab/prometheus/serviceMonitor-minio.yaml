@@ -1,0 +1,21 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: minio-monitor
+  # Namespace chứa prometheus
+  namespace: monitoring
+  labels:
+    # Label gán cho ServiceMonitor này để Prometheus đọc được
+    app.kubernetes.io/instance: service-monitor
+spec: # Phần này khai báo thông tin của serive Minio đang chạy
+  endpoints:
+  - port: minio-api
+    interval: 10s
+    scheme: http
+    path: /minio/v2/metrics/cluster
+  namespaceSelector:
+    matchNames:
+    - minio # Namespace minio được deploy
+  selector:
+    matchLabels:
+      app.kubernetes.io/instance: minio # Label instance của minio
