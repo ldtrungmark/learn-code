@@ -178,7 +178,7 @@ additionalPrometheusRules:
      - name: minio-rule
        rules:
        - alert: MinioBucketTotal
-         expr: minio_cluster_bucket_total{container="minio", endpoint="minio-api", instance="10.233.65.195:9000", job="minio", namespace="minio", pod="minio-c94d4b775-n6rxj", server="127.0.0.1:9000", service="minio"} > 2
+         expr: minio_cluster_bucket_total{container="minio", endpoint="minio-api", job="minio", namespace="minio", server="127.0.0.1:9000", service="minio"} > 2
          for: 10s
          labels:
             severity: page
@@ -3331,16 +3331,16 @@ prometheus:
     ## PrometheusRules to be selected for target discovery.
     ## If {}, select all PrometheusRules
     ##
-    ruleSelector: {}
+    # ruleSelector: {}
     ## Example which select all PrometheusRules resources
     ## with label "prometheus" with values any of "example-rules" or "example-rules-2"
-    # ruleSelector:
-    #   matchExpressions:
-    #     - key: prometheus
-    #       operator: In
-    #       values:
-    #         - example-rules
-    #         - example-rules-2
+    ruleSelector:
+      matchExpressions:
+        - key: app
+          operator: In
+          values:
+            - prometheus-grafana-stack
+            - prometheus-rule
     #
     ## Example which select all PrometheusRules resources with label "role" set to "example-rules"
     # ruleSelector:

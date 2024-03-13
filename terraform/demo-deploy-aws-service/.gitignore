@@ -1,0 +1,16 @@
+.idea/
+**.iml
+target/
+build/
+dist/
+.gradle/
+.terraform/
+**.tfstate
+.pytest_cache
+__pycache__
+**.pyc
+**.swp
+.terraform
+.terraform.lock.hcl
+*.tfstate*
+lambda_function.zip

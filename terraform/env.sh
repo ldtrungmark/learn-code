@@ -1,1 +1,1 @@
-export LOCALSTACK_API_KEY="Your localstack API"
+export LOCALSTACK_API_KEY="1Br1QGbCoq"

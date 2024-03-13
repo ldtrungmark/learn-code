@@ -1,0 +1,17 @@
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  labels:
+    app: prometheus-rule #Label này match với cấu hình ruleSelector để nó được load tự động vào Prometheus
+    role: alert-rules
+  namespace: monitoring
+  name: trungle-minio-prometheus-rule #Đây là tên hiển thị trong danh sách PrometheusRule trên K8S
+spec:
+  groups:
+  - name: "trungle-minio-rule" #Tên Rule hiển thị trên mục Rule của Prometheus trên web Prometheus
+    rules:
+    - alert: MinioTotalBucket #Tên của cảnh báo
+      for: 1m #Thời gian đạt điều kiện trước khi sinh cảnh báo. 
+      expr: minio_cluster_bucket_total > 3 #Điểu kiện so sánh để sinh cảnh báo
+      annotations:
+        message: The number of buckets has exceeded the allowed threshold (MAXIMUM=3).
