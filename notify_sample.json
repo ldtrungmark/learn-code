@@ -1,0 +1,66 @@
+{
+    "payload": {
+      "imei": "355743111111122",
+      "action": "prepaid_lock",
+      "ssm_path": "/alps-qa-ttp3/cf/kai_os/qa1/key_0",
+      "notification": {
+        "has_notification": true,
+        "title": "Payment is up to date. Testing Reload Utupdate @@@",
+        "template_id": "-1",
+        "message": " [Unlock] This handset is financed. Your payments are up to date, and there is nothing to pay at this time. Have a great day! The expiry is: 2024-05-17 04:18 UTCabc",
+        "prepaid_message": {
+          "locale": "en_GB",
+          "message": "Payment on your account is overdue, we have restricted your device. Please make payment to arrange removal of the restriction. Use the payment button below. 2024-05-17 04:18 UTC Ut2024 abc",
+          "title": "Device is restricted for non-payment!Ut2024",
+          "enabled": false,
+          "isFullScreen": true,
+          "tel": "+1234567"
+        },
+        "email": "",
+        "tel": "+1234567",
+        "is_fullscreen": false
+      },
+      "sim_control": {
+        "enabled": false,
+        "sim_control_policy_id": ""
+      },
+      "tac": {
+        "manufacturer": "AZUMI",
+        "modelFormalName": "K1"
+      },
+      "payg": {
+        "expiry_seconds": "1715919532"
+      },
+      "second_imei": null
+    },
+    "attributes": {
+      "serviceType": {
+        "Type": "String",
+        "Value": "PREPAID"
+      },
+      "eventType": {
+        "Type": "String",
+        "Value": "ACTION_ASSIGNED"
+      },
+      "deviceType": {
+        "Type": "String",
+        "Value": "Smartphone"
+      },
+      "version": {
+        "Type": "String",
+        "Value": "1"
+      },
+      "provisioningType": {
+        "Type": "String",
+        "Value": "KAI_OS"
+      },
+      "tenantId": {
+        "Type": "String",
+        "Value": "/qa1"
+      },
+      "useLocal": {
+        "Type": "String",
+        "Value": "{'KNOX_GUARD': False}"
+      }
+    }
+  }

@@ -12,8 +12,8 @@ services:
     ports:
       - "5432:5432"
     volumes:
-      - postgres/data:/data/postgres
-      - postgres/init.sql:/docker-entrypoint-initdb.d/init.sql # Automatically execute SQL file after creating instance
+      - ./postgres/data:/data/postgres
+      - ./postgres/init.sql:/docker-entrypoint-initdb.d/init.sql # Automatically execute SQL file after creating instance
 
   superset:
     image: apache/superset

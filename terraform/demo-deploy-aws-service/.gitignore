@@ -14,3 +14,4 @@ __pycache__
 .terraform.lock.hcl
 *.tfstate*
 lambda_function.zip
+tmp
